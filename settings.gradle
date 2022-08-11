@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 rootProject.name = "AndroidCMake"
 include ':app'
 include ':lib_project'
+include ':lib_contrib'
