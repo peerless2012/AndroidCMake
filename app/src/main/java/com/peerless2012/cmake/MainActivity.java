@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import com.peerless2012.cmake.contrib.Contrib;
+import com.peerless2012.cmake.makefile.Makefile;
 import com.peerless2012.cmake.project.Project;
 
 /**
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mainText = findViewById(R.id.main_tv);
         findViewById(R.id.main_project).setOnClickListener(this);
         findViewById(R.id.main_contrib).setOnClickListener(this);
+        findViewById(R.id.main_makefile).setOnClickListener(this);
     }
 
     @Override
@@ -33,6 +35,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mainText.setText("Project is : " + Project.getName());
         } else if (v.getId() == R.id.main_contrib) {
             mainText.setText("Contrib is : " + Contrib.getName());
+        } else if (v.getId() == R.id.main_makefile) {
+            mainText.setText("Makefile is : " + Makefile.getName());
         }
     }
 }
