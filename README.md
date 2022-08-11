@@ -1,10 +1,10 @@
 # Android CMake
 
-## [Project](/lib_project/README.md)
+## [Project](/lib_project)
 * Print Cmake and Android toolchain args.
 
-## [Contrib](/lib_contrib/README.md)
+## [Contrib](/lib_contrib)
 * Use source out of current tree.
 
-## [Makefile](/lib_makefile/README.md)
+## [Makefile](/lib_makefile)
 * Build makefile project with cmake.
