@@ -2,4 +2,4 @@ plugins {
     id 'com.android.library'
 }
 apply from:'../default_build.gradle'
-apply from:'../native_build.gradle'
+//apply from:'../native_build.gradle'

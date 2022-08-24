@@ -159,7 +159,7 @@ else
     echo "build type is release"
 fi
 
-cat > ${prefix}/config.h <<EOF
+cat > config.h <<EOF
 ${config_warning}
 ${config_define}
 EOF

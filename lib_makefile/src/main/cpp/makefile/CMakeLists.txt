@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 3.22.1)
 
 project(Makefile)
 
-message("Origin path = $ENV{PATH}")
+#message("Origin path = $ENV{PATH}")
 #SET(ENV{PATH} "${ANDROID_TOOLCHAIN_ROOT}/bin:$ENV{PATH}")
-message("Current path = $ENV{PATH}")
+#message("Current path = $ENV{PATH}")
 
 cmake_path(SET ANDROID_TOOLCHAIN_PATH ${ANDROID_TOOLCHAIN_ROOT}/bin)
 cmake_path(GET ANDROID_TOOLCHAIN_PATH ROOT_NAME ANDROID_TOOLCHAIN_PATH_ROOT)
@@ -43,9 +43,10 @@ elseif(${CMAKE_ANDROID_ARCH_ABI} STREQUAL "x86_64")
 else()
     message(FATAL_ERROR " unknown architecture ${CMAKE_ANDROID_ARCH_ABI}")
 endif()
+set(MAKE_PREFIX ${PROJECT_BINARY_DIR}/build)
 set(TARGET_ARCH "${CROSS_PREFIX}${ANDROID_NATIVE_API_LEVEL}")
 
-set(CFG_FLAGS "${CFG_FLAGS} --prefix=${PROJECT_BINARY_DIR}")
+set(CFG_FLAGS "${CFG_FLAGS} --prefix=${MAKE_PREFIX}")
 set(CFG_FLAGS "${CFG_FLAGS} --cross-prefix=${CROSS_PREFIX}-")
 set(CFG_FLAGS "${CFG_FLAGS} --enable-cross-compile")
 set(CFG_FLAGS "${CFG_FLAGS} --target-os=${CMAKE_SYSTEM_NAME}")
@@ -77,9 +78,11 @@ execute_process(
         ERROR_VARIABLE LS_DESCRIBE
 )
 if(NOT EXISTS "${PROJECT_BINARY_DIR}/Makefile")
-    file(WRITE "include ${CMAKE_CURRENT_SOURCE_DIR}/Makefile")
+    file(WRITE ${PROJECT_BINARY_DIR}/Makefile "include ${CMAKE_CURRENT_SOURCE_DIR}/Makefile")
 #    TODO Check why the Makefile is created when sysc， and not create when run.
     message(WARNING "The Makefile link not generated, so wired!")
+else()
+    message(WARNING "The Makefile already exist!")
 endif()
 message("Configure result = ${LS_DESCRIBE}")
 
@@ -94,7 +97,7 @@ message("CMake processor count is ${HOST_NPROC}.")
 add_custom_command(
         OUTPUT MakeAndInstall
         COMMAND sh -c "export PATH=${ANDROID_TOOLCHAIN_PATH}:$PATH && make -j${HOST_NPROC} && make install"
-        BYPRODUCTS ${PROJECT_BINARY_DIR}/include ${PROJECT_BINARY_DIR}/lib
+        BYPRODUCTS ${MAKE_PREFIX}/include ${MAKE_PREFIX}/lib
         WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
         VERBATIM
 )
@@ -108,16 +111,17 @@ add_custom_target(
 )
 
 include_directories(include)
+include_directories(${PROJECT_BINARY_DIR})
 
 file(GLOB INCLUDES ./*.h ${PROJECT_BINARY_DIR}/include/*.h)
 file(GLOB SOURCES src/*.cpp)
 
-add_library(Makefile SHARED ${SOURCES} ${INCLUDES})
+add_library(Makefile SHARED ${INCLUDES})
 add_dependencies(Makefile Makefile_static)
 set_target_properties(Makefile PROPERTIES LINKER_LANGUAGE CXX)
-set_property(DIRECTORY PROPERTY ADDITIONAL_MAKE_CLEAN_FILES ${PREFIX})
-target_include_directories(Makefile PUBLIC . ${PROJECT_BINARY_DIR}/include)
-target_link_directories(Makefile PUBLIC ${PROJECT_BINARY_DIR}/lib)
+set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_CLEAN_FILES ${MAKE_PREFIX})
+target_include_directories(Makefile PUBLIC ${MAKE_PREFIX}/include)
+target_link_directories(Makefile PUBLIC ${MAKE_PREFIX}/lib)
 target_link_libraries(Makefile
         "-Wl,--whole-archive" #之后的库使用--whole-archive选项
         makefile
