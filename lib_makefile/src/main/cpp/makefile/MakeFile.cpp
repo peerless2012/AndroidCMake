@@ -6,9 +6,9 @@
  * @Description: 
  */
 
-#include "Makefile.h"
+#include "MakeFile.h"
 
-std::string Makefile::getName() {
+std::string MakeFile::getName() {
 #ifdef DEBUG
     return "Makefile with debug!";
 #else

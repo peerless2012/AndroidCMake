@@ -9,5 +9,5 @@
 #ifndef ANDROIDCMAKE_MAKEFILEDEMO_H
 #define ANDROIDCMAKE_MAKEFILEDEMO_H
 #include <jni.h>
-#include "Makefile.h"
+#include "MakeFile.h"
 #endif //ANDROIDCMAKE_MAKEFILEDEMO_H

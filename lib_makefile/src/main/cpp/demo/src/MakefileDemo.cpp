@@ -6,11 +6,11 @@
  * @Description:
  */
 
-#include "Makefile.h"
+#include "MakefileDemo.h"
 
 extern "C"
 JNIEXPORT jstring
 JNICALL
 Java_com_peerless2012_cmake_makefile_Makefile_getName(JNIEnv *env, jclass clazz) {
-    return env->NewStringUTF(Makefile::getName().c_str());
+    return env->NewStringUTF(MakeFile::getName().c_str());
 }

@@ -178,8 +178,9 @@ else
     test -e "$source_path/config.h" &&
         die "Out of tree builds are impossible with config.h in source dir."
 fi
-echo "include $source_path/Makefile" > Makefile
-
+cat > Makefile <<EOF
+include $source_path/Makefile
+EOF
 
 # config.mak
 cat > config.mak <<EOF

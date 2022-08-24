@@ -11,7 +11,7 @@
 #include <string>
 #include "config.h"
 #include "jni.h"
-class Makefile {
+class MakeFile {
 public:
     static std::string getName();
 };
